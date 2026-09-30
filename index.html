@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FindBack - Smart Lost & Found</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #07110d;
+  color: white;
+}
+
+header {
+  background: linear-gradient(135deg,#062d1b,#0b6b3c);
+  padding: 35px 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #c9ffe2;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat {
+  background: #10251b;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #1e6c46;
+}
+
+.stat h2 {
+  color: #39ff91;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+button {
+  background: #19d86b;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #39ff91;
+}
+
+button.secondary {
+  background: #17372a;
+  color: white;
+}
+
+.card {
+  background: #0d1c15;
+  border: 1px solid #1b5035;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  color: #39ff91;
+  margin-bottom: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #164d32;
+  color: #75ffb2;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.match {
+  margin-top: 12px;
+  padding: 12px;
+  background: #102e20;
+  border-left: 4px solid #39ff91;
+  border-radius: 8px;
+}
+
+form {
+  display: none;
+  background: #0d1c15;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border: 1px solid #1b5035;
+}
+
+input, select, textarea {
+  width: 100%;
+  margin: 8px 0 15px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #285b43;
+  background: #07110d;
+  color: white;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+label {
+  color: #b9e8cc;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #8eb29e;
+}
+
+.ai {
+  color: #39ff91;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #6f907e;
+}
+
+@media(max-width:700px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  header h1 {
+    font-size: 32px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔎 FindBack</h1>
+  <p>Smart Campus Lost & Found</p>
+  <p>From Lost → Match → Return</p>
+</header>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat">
+      <h2 id="lostCount">0</h2>
+      <p>Lost Items</p>
+    </div>
+
+    <div class="stat">
+      <h2 id="foundCount">0</h2>
+      <p>Found Items</p>
+    </div>
+
+    <div class="stat">
+      <h2 id="matchCount">0</h2>
+      <p>Smart Matches</p>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="openForm('lost')">➕ Report Lost Item</button>
+    <button onclick="openForm('found')">📦 Report Found Item</button>
+    <button class="secondary" onclick="loadDemo()">✨ Load Demo Data</button>
+  </div>
+
+  <form id="itemForm">
+
+    <h2 id="formTitle">Report Item</h2>
+    <br>
+
+    <label>Item Name</label>
+    <input id="itemName" placeholder="Example: Black Wallet" required>
+
+    <label>Category</label>
+    <select id="category">
+      <option>Electronics</option>
+      <option>Wallet</option>
+      <option>Documents</option>
+      <option>Keys</option>
+      <option>Bag</option>
+      <option>Clothing</option>
+      <option>Other</option>
+    </select>
+
+    <label>Color</label>
+    <input id="color" placeholder="Example: Black">
+
+    <label>Location</label>
+    <input id="location" placeholder="Example: Canteen">
+
+    <label>Description</label>
+    <textarea id="description"
+      placeholder="Describe the item..."></textarea>
+
+    <button type="submit">Submit Report</button>
+    <button type="button" class="secondary"
+      onclick="closeForm()">Cancel</button>
+
+  </form>
+
+  <h2 style="margin-bottom:15px;">📋 Recent Reports</h2>
+
+  <div id="items"></div>
+
+</div>
+
+<footer>
+  FindBack • Built for Campus Safety & Community
+  <br><br>
+  ⚙️ GitHub Actions • 🚀 Automated Deployment
+</footer>
+
+<script>
+
+let items = JSON.parse(localStorage.getItem("findbackItems")) || [];
+
+let currentType = "lost";
+
+function save() {
+  localStorage.setItem("findbackItems", JSON.stringify(items));
+}
+
+function openForm(type) {
+
+  currentType = type;
+
+  document.getElementById("itemForm").style.display = "block";
+
+  document.getElementById("formTitle").innerText =
+    type === "lost"
+    ? "🔴 Report Lost Item"
+    : "🟢 Report Found Item";
+
+  window.scrollTo({
+    top: document.getElementById("itemForm").offsetTop,
+    behavior: "smooth"
+  });
+}
+
+function closeForm() {
+  document.getElementById("itemForm").style.display = "none";
+}
+
+document.getElementById("itemForm").addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const item = {
+
+    id: Date.now(),
+
+    type: currentType,
+
+    name: document.getElementById("itemName").value,
+
+    category: document.getElementById("category").value,
+
+    color: document.getElementById("color").value,
+
+    location: document.getElementById("location").value,
+
+    description: document.getElementById("description").value
+
+  };
+
+  items.unshift(item);
+
+  save();
+
+  this.reset();
+
+  closeForm();
+
+  render();
+
+});
+
+function similarity(a,b) {
+
+  let textA =
+    (a.name + " " +
+     a.category + " " +
+     a.color + " " +
+     a.location + " " +
+     a.description)
+    .toLowerCase();
+
+  let textB =
+    (b.name + " " +
+     b.category + " " +
+     b.color + " " +
+     b.location + " " +
+     b.description)
+    .toLowerCase();
+
+  let wordsA = new Set(
+    textA.split(/\s+/).filter(x => x.length > 2)
+  );
+
+  let wordsB = new Set(
+    textB.split(/\s+/).filter(x => x.length > 2)
+  );
+
+  let common = 0;
+
+  wordsA.forEach(word => {
+
+    if(wordsB.has(word)) {
+      common++;
+    }
+
+  });
+
+  let total = new Set([...wordsA,...wordsB]).size;
+
+  return total === 0
+    ? 0
+    : Math.round((common / total) * 100);
+}
+
+function findMatches(item) {
+
+  return items
+
+    .filter(x => x.type !== item.type)
+
+    .map(x => ({
+      item:x,
+      score:similarity(item,x)
+    }))
+
+    .filter(x => x.score >= 20)
+
+    .sort((a,b) => b.score-a.score)
+
+    .slice(0,2);
+}
+
+function render() {
+
+  const container = document.getElementById("items");
+
+  const lost =
+    items.filter(x => x.type === "lost").length;
+
+  const found =
+    items.filter(x => x.type === "found").length;
+
+  let matches = 0;
+
+  items.forEach(item => {
+
+    matches += findMatches(item).length;
+
+  });
+
+  document.getElementById("lostCount").innerText = lost;
+
+  document.getElementById("foundCount").innerText = found;
+
+  document.getElementById("matchCount").innerText = matches;
+
+  if(items.length === 0) {
+
+    container.innerHTML =
+      `<div class="empty">
+        No reports yet.<br>
+        Report a lost or found item.
+      </div>`;
+
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+
+    const matches = findMatches(item);
+
+    return `
+
+      <div class="card">
+
+        <span class="badge">
+          ${item.type === "lost"
+            ? "🔴 LOST"
+            : "🟢 FOUND"}
+        </span>
+
+        <h3>${item.name}</h3>
+
+        <p>
+          <b>Category:</b> ${item.category}
+        </p>
+
+        <p>
+          <b>Color:</b> ${item.color || "Not specified"}
+        </p>
+
+        <p>
+          <b>Location:</b> ${item.location}
+        </p>
+
+        <p>
+          <b>Description:</b> ${item.description}
+        </p>
+
+        ${
+          matches.length
+          ?
+          matches.map(m => `
+
+            <div class="match">
+
+              🧠 <span class="ai">
+              Smart Match Found!
+              </span>
+
+              <br>
+
+              Possible match:
+              <b>${m.item.name}</b>
+
+              <br>
+
+              Match confidence:
+              <b>${m.score}%</b>
+
+              <br>
+
+              📍 ${m.item.location}
+
+            </div>
+
+          `).join("")
+          : ""
+        }
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+function loadDemo() {
+
+  items = [
+
+    {
+      id:1,
+      type:"lost",
+      name:"Black Wallet",
+      category:"Wallet",
+      color:"Black",
+      location:"Canteen",
+      description:"Black leather wallet with student ID card"
+    },
+
+    {
+      id:2,
+      type:"found",
+      name:"Black Leather Wallet",
+      category:"Wallet",
+      color:"Black",
+      location:"Canteen",
+      description:"Found black wallet containing student ID"
+    },
+
+    {
+      id:3,
+      type:"lost",
+      name:"Blue Backpack",
+      category:"Bag",
+      color:"Blue",
+      location:"Library",
+      description:"Blue college backpack with laptop compartment"
+    },
+
+    {
+      id:4,
+      type:"found",
+      name:"Blue College Bag",
+      category:"Bag",
+      color:"Blue",
+      location:"Library",
+      description:"Blue backpack found near library entrance"
+    }
+
+  ];
+
+  save();
+
+  render();
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
