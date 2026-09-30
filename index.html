@@ -4,172 +4,270 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FindBack - Smart Lost & Found</title>
+<title>Campus Lost & Found</title>
 
 <style>
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #07110d;
-  color: white;
+    background: #07130f;
+    color: white;
+    min-height: 100vh;
 }
 
 header {
-  background: linear-gradient(135deg,#062d1b,#0b6b3c);
-  padding: 35px 20px;
-  text-align: center;
+    background: #0b2118;
+    padding: 22px 8%;
+    border-bottom: 1px solid #1ed760;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-header h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
+.logo {
+    color: #35e887;
+    font-size: 25px;
+    font-weight: bold;
 }
 
-header p {
-  color: #c9ffe2;
+nav button {
+    background: transparent;
+    color: white;
+    border: none;
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 25px;
+nav button:hover {
+    color: #35e887;
+}
+
+.hero {
+    text-align: center;
+    padding: 55px 20px 35px;
+}
+
+.hero h1 {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: #35e887;
+}
+
+.hero p {
+    color: #a9bbb2;
+    font-size: 17px;
+    margin-bottom: 28px;
+}
+
+.main-btn {
+    background: #35e887;
+    color: #06120d;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-btn:hover {
+    background: #20c96d;
+    transform: translateY(-2px);
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 15px;
-  margin-bottom: 25px;
+    width: 85%;
+    max-width: 1000px;
+    margin: 20px auto 35px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
 .stat {
-  background: #10251b;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid #1e6c46;
+    background: #0c2118;
+    border: 1px solid #193c2c;
+    border-radius: 15px;
+    padding: 22px;
+    text-align: center;
 }
 
 .stat h2 {
-  color: #39ff91;
+    color: #35e887;
+    font-size: 32px;
 }
 
-.buttons {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 25px;
+.stat p {
+    color: #a9bbb2;
+    margin-top: 5px;
 }
 
-button {
-  background: #19d86b;
-  border: none;
-  padding: 13px 20px;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
+.container {
+    width: 85%;
+    max-width: 1100px;
+    margin: auto;
 }
 
-button:hover {
-  background: #39ff91;
+.tools {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
 }
 
-button.secondary {
-  background: #17372a;
-  color: white;
+.search {
+    flex: 1;
+    min-width: 220px;
+    padding: 13px;
+    border-radius: 9px;
+    border: 1px solid #315545;
+    background: #0b1d16;
+    color: white;
+}
+
+.filter {
+    padding: 13px;
+    border-radius: 9px;
+    background: #0b1d16;
+    color: white;
+    border: 1px solid #315545;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 20px;
+    padding-bottom: 50px;
 }
 
 .card {
-  background: #0d1c15;
-  border: 1px solid #1b5035;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 15px;
+    background: #0b1d16;
+    border: 1px solid #1b3e2c;
+    border-radius: 15px;
+    padding: 20px;
 }
 
 .card h3 {
-  color: #39ff91;
-  margin-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #a9bbb2;
+    margin: 8px 0;
 }
 
 .badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 20px;
-  background: #164d32;
-  color: #75ffb2;
-  font-size: 12px;
-  margin-bottom: 10px;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 8px;
 }
 
-.match {
-  margin-top: 12px;
-  padding: 12px;
-  background: #102e20;
-  border-left: 4px solid #39ff91;
-  border-radius: 8px;
+.lost {
+    background: #572222;
+    color: #ff8d8d;
 }
 
-form {
-  display: none;
-  background: #0d1c15;
-  padding: 25px;
-  border-radius: 15px;
-  margin-bottom: 25px;
-  border: 1px solid #1b5035;
+.found {
+    background: #164f31;
+    color: #65f3a0;
 }
 
-input, select, textarea {
-  width: 100%;
-  margin: 8px 0 15px;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #285b43;
-  background: #07110d;
-  color: white;
-}
-
-textarea {
-  min-height: 100px;
-}
-
-label {
-  color: #b9e8cc;
+.card button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #35e887;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .empty {
-  text-align: center;
-  padding: 40px;
-  color: #8eb29e;
+    text-align: center;
+    color: #789087;
+    padding: 40px;
+    grid-column: 1/-1;
 }
 
-.ai {
-  color: #39ff91;
-  font-weight: bold;
+/* Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-footer {
-  text-align: center;
-  padding: 30px;
-  color: #6f907e;
+.modal-box {
+    width: 100%;
+    max-width: 500px;
+    background: #0c2118;
+    border: 1px solid #35e887;
+    border-radius: 15px;
+    padding: 25px;
 }
 
-@media(max-width:700px) {
-  .stats {
-    grid-template-columns: 1fr;
-  }
+.modal-box h2 {
+    margin-bottom: 20px;
+    color: #35e887;
+}
 
-  header h1 {
-    font-size: 32px;
-  }
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 12px;
+    border-radius: 8px;
+    border: 1px solid #315545;
+    background: #07130f;
+    color: white;
+}
 
-  .buttons {
-    flex-direction: column;
-  }
+.modal-box textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 22px;
+}
+
+@media(max-width:650px) {
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 18px;
+    }
+
+    nav button {
+        margin-left: 8px;
+    }
 }
 </style>
 </head>
@@ -177,368 +275,390 @@ footer {
 <body>
 
 <header>
-  <h1>🔎 FindBack</h1>
-  <p>Smart Campus Lost & Found</p>
-  <p>From Lost → Match → Return</p>
+    <div class="logo">🎒 Campus Lost & Found</div>
+
+    <nav>
+        <button onclick="showAll()">All Items</button>
+        <button onclick="openModal()">Report Item</button>
+    </nav>
 </header>
+
+<section class="hero">
+
+    <h1>Lost something? <span>Find it.</span></h1>
+
+    <p>
+        A simple campus platform to report lost items,
+        find belongings and return them to their owners.
+    </p>
+
+    <button class="main-btn" onclick="openModal()">
+        + Report an Item
+    </button>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat">
+        <h2 id="totalCount">0</h2>
+        <p>Total Reports</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="lostCount">0</h2>
+        <p>Lost Items</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="foundCount">0</h2>
+        <p>Found Items</p>
+    </div>
+
+</section>
 
 <div class="container">
 
-  <div class="stats">
-    <div class="stat">
-      <h2 id="lostCount">0</h2>
-      <p>Lost Items</p>
+    <div class="tools">
+
+        <input
+            id="search"
+            class="search"
+            placeholder="🔍 Search item, location..."
+            oninput="displayItems()"
+        >
+
+        <select
+            id="filter"
+            class="filter"
+            onchange="displayItems()"
+        >
+            <option value="all">All</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+        </select>
+
     </div>
 
-    <div class="stat">
-      <h2 id="foundCount">0</h2>
-      <p>Found Items</p>
-    </div>
-
-    <div class="stat">
-      <h2 id="matchCount">0</h2>
-      <p>Smart Matches</p>
-    </div>
-  </div>
-
-  <div class="buttons">
-    <button onclick="openForm('lost')">➕ Report Lost Item</button>
-    <button onclick="openForm('found')">📦 Report Found Item</button>
-    <button class="secondary" onclick="loadDemo()">✨ Load Demo Data</button>
-  </div>
-
-  <form id="itemForm">
-
-    <h2 id="formTitle">Report Item</h2>
-    <br>
-
-    <label>Item Name</label>
-    <input id="itemName" placeholder="Example: Black Wallet" required>
-
-    <label>Category</label>
-    <select id="category">
-      <option>Electronics</option>
-      <option>Wallet</option>
-      <option>Documents</option>
-      <option>Keys</option>
-      <option>Bag</option>
-      <option>Clothing</option>
-      <option>Other</option>
-    </select>
-
-    <label>Color</label>
-    <input id="color" placeholder="Example: Black">
-
-    <label>Location</label>
-    <input id="location" placeholder="Example: Canteen">
-
-    <label>Description</label>
-    <textarea id="description"
-      placeholder="Describe the item..."></textarea>
-
-    <button type="submit">Submit Report</button>
-    <button type="button" class="secondary"
-      onclick="closeForm()">Cancel</button>
-
-  </form>
-
-  <h2 style="margin-bottom:15px;">📋 Recent Reports</h2>
-
-  <div id="items"></div>
+    <div id="items" class="items"></div>
 
 </div>
 
-<footer>
-  FindBack • Built for Campus Safety & Community
-  <br><br>
-  ⚙️ GitHub Actions • 🚀 Automated Deployment
-</footer>
+
+<!-- REPORT MODAL -->
+
+<div id="modal" class="modal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeModal()">✕</span>
+
+        <h2>Report an Item</h2>
+
+        <form id="itemForm">
+
+            <label>Item Name</label>
+
+            <input
+                id="itemName"
+                placeholder="Example: Black Wallet"
+                required
+            >
+
+            <label>Report Type</label>
+
+            <select id="itemType">
+
+                <option value="lost">I Lost This</option>
+
+                <option value="found">I Found This</option>
+
+            </select>
+
+            <label>Category</label>
+
+            <select id="category">
+
+                <option>Electronics</option>
+                <option>Documents</option>
+                <option>Books</option>
+                <option>Accessories</option>
+                <option>Others</option>
+
+            </select>
+
+            <label>Location</label>
+
+            <input
+                id="location"
+                placeholder="Example: EM4 Block"
+                required
+            >
+
+            <label>Description</label>
+
+            <textarea
+                id="description"
+                placeholder="Describe the item..."
+                required
+            ></textarea>
+
+            <label>Contact</label>
+
+            <input
+                id="contact"
+                placeholder="Email or phone"
+                required
+            >
+
+            <button class="main-btn" type="submit">
+                Submit Report
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
 
 <script>
 
-let items = JSON.parse(localStorage.getItem("findbackItems")) || [];
+let items = JSON.parse(localStorage.getItem("campusItems")) || [
 
-let currentType = "lost";
+    {
+        id: 1,
+        name: "Black Wallet",
+        type: "lost",
+        category: "Accessories",
+        location: "EM4 Block",
+        description: "Black leather wallet",
+        contact: "student@example.com"
+    },
 
-function save() {
-  localStorage.setItem("findbackItems", JSON.stringify(items));
-}
-
-function openForm(type) {
-
-  currentType = type;
-
-  document.getElementById("itemForm").style.display = "block";
-
-  document.getElementById("formTitle").innerText =
-    type === "lost"
-    ? "🔴 Report Lost Item"
-    : "🟢 Report Found Item";
-
-  window.scrollTo({
-    top: document.getElementById("itemForm").offsetTop,
-    behavior: "smooth"
-  });
-}
-
-function closeForm() {
-  document.getElementById("itemForm").style.display = "none";
-}
-
-document.getElementById("itemForm").addEventListener("submit", function(e) {
-
-  e.preventDefault();
-
-  const item = {
-
-    id: Date.now(),
-
-    type: currentType,
-
-    name: document.getElementById("itemName").value,
-
-    category: document.getElementById("category").value,
-
-    color: document.getElementById("color").value,
-
-    location: document.getElementById("location").value,
-
-    description: document.getElementById("description").value
-
-  };
-
-  items.unshift(item);
-
-  save();
-
-  this.reset();
-
-  closeForm();
-
-  render();
-
-});
-
-function similarity(a,b) {
-
-  let textA =
-    (a.name + " " +
-     a.category + " " +
-     a.color + " " +
-     a.location + " " +
-     a.description)
-    .toLowerCase();
-
-  let textB =
-    (b.name + " " +
-     b.category + " " +
-     b.color + " " +
-     b.location + " " +
-     b.description)
-    .toLowerCase();
-
-  let wordsA = new Set(
-    textA.split(/\s+/).filter(x => x.length > 2)
-  );
-
-  let wordsB = new Set(
-    textB.split(/\s+/).filter(x => x.length > 2)
-  );
-
-  let common = 0;
-
-  wordsA.forEach(word => {
-
-    if(wordsB.has(word)) {
-      common++;
+    {
+        id: 2,
+        name: "Scientific Calculator",
+        type: "found",
+        category: "Electronics",
+        location: "Library",
+        description: "Casio calculator found near study table",
+        contact: "student2@example.com"
     }
 
-  });
+];
 
-  let total = new Set([...wordsA,...wordsB]).size;
 
-  return total === 0
-    ? 0
-    : Math.round((common / total) * 100);
+function saveItems() {
+
+    localStorage.setItem(
+        "campusItems",
+        JSON.stringify(items)
+    );
+
 }
 
-function findMatches(item) {
 
-  return items
+function displayItems() {
 
-    .filter(x => x.type !== item.type)
+    const container = document.getElementById("items");
 
-    .map(x => ({
-      item:x,
-      score:similarity(item,x)
-    }))
+    const search =
+        document.getElementById("search").value.toLowerCase();
 
-    .filter(x => x.score >= 20)
+    const filter =
+        document.getElementById("filter").value;
 
-    .sort((a,b) => b.score-a.score)
+    let filtered = items.filter(item => {
 
-    .slice(0,2);
-}
+        const matchesSearch =
+            item.name.toLowerCase().includes(search) ||
+            item.location.toLowerCase().includes(search) ||
+            item.category.toLowerCase().includes(search);
 
-function render() {
+        const matchesFilter =
+            filter === "all" ||
+            item.type === filter;
 
-  const container = document.getElementById("items");
+        return matchesSearch && matchesFilter;
 
-  const lost =
-    items.filter(x => x.type === "lost").length;
+    });
 
-  const found =
-    items.filter(x => x.type === "found").length;
 
-  let matches = 0;
+    if(filtered.length === 0) {
 
-  items.forEach(item => {
+        container.innerHTML =
+            `<div class="empty">
+                No items found 😕
+             </div>`;
 
-    matches += findMatches(item).length;
+    }
 
-  });
+    else {
 
-  document.getElementById("lostCount").innerText = lost;
+        container.innerHTML = filtered.map(item => `
 
-  document.getElementById("foundCount").innerText = found;
+            <div class="card">
 
-  document.getElementById("matchCount").innerText = matches;
+                <h3>
+                    ${item.type === "lost" ? "🔎" : "📦"}
+                    ${item.name}
+                </h3>
 
-  if(items.length === 0) {
+                <p>📍 ${item.location}</p>
 
-    container.innerHTML =
-      `<div class="empty">
-        No reports yet.<br>
-        Report a lost or found item.
-      </div>`;
+                <p>🏷️ ${item.category}</p>
 
-    return;
-  }
+                <p>${item.description}</p>
 
-  container.innerHTML = items.map(item => {
+                <span class="badge ${item.type}">
+                    ${item.type === "lost" ? "🔴 LOST" : "🟢 FOUND"}
+                </span>
 
-    const matches = findMatches(item);
+                ${
+                    item.type === "lost"
 
-    return `
+                    ?
 
-      <div class="card">
+                    `<button onclick="markFound(${item.id})">
+                        I Found This
+                    </button>`
 
-        <span class="badge">
-          ${item.type === "lost"
-            ? "🔴 LOST"
-            : "🟢 FOUND"}
-        </span>
+                    :
 
-        <h3>${item.name}</h3>
-
-        <p>
-          <b>Category:</b> ${item.category}
-        </p>
-
-        <p>
-          <b>Color:</b> ${item.color || "Not specified"}
-        </p>
-
-        <p>
-          <b>Location:</b> ${item.location}
-        </p>
-
-        <p>
-          <b>Description:</b> ${item.description}
-        </p>
-
-        ${
-          matches.length
-          ?
-          matches.map(m => `
-
-            <div class="match">
-
-              🧠 <span class="ai">
-              Smart Match Found!
-              </span>
-
-              <br>
-
-              Possible match:
-              <b>${m.item.name}</b>
-
-              <br>
-
-              Match confidence:
-              <b>${m.score}%</b>
-
-              <br>
-
-              📍 ${m.item.location}
+                    `<button onclick="contactOwner('${item.contact}')">
+                        Contact Reporter
+                    </button>`
+                }
 
             </div>
 
-          `).join("")
-          : ""
-        }
+        `).join("");
 
-      </div>
-
-    `;
-
-  }).join("");
-
-}
-
-function loadDemo() {
-
-  items = [
-
-    {
-      id:1,
-      type:"lost",
-      name:"Black Wallet",
-      category:"Wallet",
-      color:"Black",
-      location:"Canteen",
-      description:"Black leather wallet with student ID card"
-    },
-
-    {
-      id:2,
-      type:"found",
-      name:"Black Leather Wallet",
-      category:"Wallet",
-      color:"Black",
-      location:"Canteen",
-      description:"Found black wallet containing student ID"
-    },
-
-    {
-      id:3,
-      type:"lost",
-      name:"Blue Backpack",
-      category:"Bag",
-      color:"Blue",
-      location:"Library",
-      description:"Blue college backpack with laptop compartment"
-    },
-
-    {
-      id:4,
-      type:"found",
-      name:"Blue College Bag",
-      category:"Bag",
-      color:"Blue",
-      location:"Library",
-      description:"Blue backpack found near library entrance"
     }
 
-  ];
 
-  save();
-
-  render();
+    updateStats();
 
 }
 
-render();
+
+function updateStats() {
+
+    document.getElementById("totalCount").innerText =
+        items.length;
+
+    document.getElementById("lostCount").innerText =
+        items.filter(item => item.type === "lost").length;
+
+    document.getElementById("foundCount").innerText =
+        items.filter(item => item.type === "found").length;
+
+}
+
+
+function markFound(id) {
+
+    const item = items.find(item => item.id === id);
+
+    if(item) {
+
+        item.type = "found";
+
+        saveItems();
+
+        displayItems();
+
+        alert("Item marked as FOUND! 🎉");
+
+    }
+
+}
+
+
+function contactOwner(contact) {
+
+    alert(
+        "Contact the reporter at: " + contact
+    );
+
+}
+
+
+function openModal() {
+
+    document.getElementById("modal").style.display = "flex";
+
+}
+
+
+function closeModal() {
+
+    document.getElementById("modal").style.display = "none";
+
+}
+
+
+document.getElementById("itemForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const newItem = {
+
+            id: Date.now(),
+
+            name:
+                document.getElementById("itemName").value,
+
+            type:
+                document.getElementById("itemType").value,
+
+            category:
+                document.getElementById("category").value,
+
+            location:
+                document.getElementById("location").value,
+
+            description:
+                document.getElementById("description").value,
+
+            contact:
+                document.getElementById("contact").value
+
+        };
+
+
+        items.unshift(newItem);
+
+        saveItems();
+
+        displayItems();
+
+        this.reset();
+
+        closeModal();
+
+        alert("Report submitted successfully! ✅");
+
+    }
+);
+
+
+function showAll() {
+
+    document.getElementById("filter").value = "all";
+
+    document.getElementById("search").value = "";
+
+    displayItems();
+
+}
+
+
+displayItems();
 
 </script>
 
